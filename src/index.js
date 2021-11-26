@@ -15,7 +15,7 @@ function checksExistsUserAccount(request, response, next) {
   const findUser = users.find(user => user.username === username);
 
   if(!findUser){
-    return response.status(404).json({ message: ""})
+    return response.status(404).json({ error: "Messagem de erro"})
   }
 
   request.user = findUser
@@ -27,7 +27,7 @@ function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request;
 
   if(user.pro === false && user.todos.length >= 10){
-    return response.status(403).json({ message: ""})
+    return response.status(403).json({ error: "Messagem de erro"})
   }
   if(user.pro === false && user.todos.length <= 10){
     return next()
@@ -43,17 +43,17 @@ function checksTodoExists(request, response, next) {
 
   const validatedId = validate(id)
   if(!validatedId){
-    return response.status(400).json({ message: ""})
+    return response.status(400).json({ error: "Messagem de erro"})
   }
 
   const userExist = users.find(user => user.username === username)
   if(!userExist){
-    return response.status(404).json({ message: ""})
+    return response.status(404).json({ error: "Messagem de erro"})
   }
 
   const todoExist = userExist.todos.find(todo => todo.id === id)
   if(!todoExist){
-    return response.status(404).json({ message: ""})
+    return response.status(404).json({ error: "Messagem de erro"})
   }
 
   request.user = userExist
@@ -67,7 +67,7 @@ function findUserById(request, response, next) {
   const userExist = users.find(user => user.id === id)
 
   if(!userExist){
-    return response.status(404).json({ message: ""})
+    return response.status(404).json({ error: "Messagem de erro"})
   }
 
   request.user = userExist
