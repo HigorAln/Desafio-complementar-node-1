@@ -15,7 +15,7 @@ function checksExistsUserAccount(request, response, next) {
   const findUser = users.find(user => user.username === username);
 
   if(!findUser){
-    return response.status(404)
+    return response.status(404).json({ message: ""})
   }
 
   request.user = findUser
@@ -27,7 +27,7 @@ function checksCreateTodosUserAvailability(request, response, next) {
   const { user } = request;
 
   if(user.pro === false && user.todos.length >= 10){
-    return response.status(403)
+    return response.status(403).json({ message: ""})
   }
   if(user.pro === false && user.todos.length <= 10){
     return next()
@@ -41,19 +41,19 @@ function checksTodoExists(request, response, next) {
   const { username } = request.headers;
   const { id } = request.params;
 
-  const test = validate(id)
-  if(!test){
-    return response.status(400)
+  const validatedId = validate(id)
+  if(!validatedId){
+    return response.status(400).json({ message: ""})
   }
 
   const userExist = users.find(user => user.username === username)
   if(!userExist){
-    return response.status(404)
+    return response.status(404).json({ message: ""})
   }
 
   const todoExist = userExist.todos.find(todo => todo.id === id)
   if(!todoExist){
-    return response.status(404)
+    return response.status(404).json({ message: ""})
   }
 
   request.user = userExist
@@ -67,13 +67,11 @@ function findUserById(request, response, next) {
   const userExist = users.find(user => user.id === id)
 
   if(!userExist){
-    return response.status(404)
+    return response.status(404).json({ message: ""})
   }
 
   request.user = userExist
-
   return next()
-
 }
 
 app.post('/users', (request, response) => {
